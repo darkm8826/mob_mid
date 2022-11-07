@@ -7,17 +7,23 @@ public class Player : MonoBehaviour
     public float speed = 10;
     public Joystick joyStick;
     public Transform firePoint;
+    public Transform firePoint2;
+    public Transform firePoint3;
     public GameObject bulletPrefab;
 
     private CharacterController controller;
-
     private GameObject focusEnemy;
     private bool Moving;
+    private bool nor_shoot = true;
+    public bool continuous_shooting = false;
+    public bool double_shot = false;
+    public bool oblique_arrow = false;
 
     void Start()
     {
         controller = GetComponent<CharacterController>();
         Moving = false;
+        nor_shoot = true;
         // 開始一直射擊的 Coroutine 函式
         StartCoroutine(KeepShooting());
     }
@@ -41,7 +47,10 @@ public class Player : MonoBehaviour
             }
         }
 
-
+        if (double_shot == true)
+        {
+            nor_shoot = false;
+        }
 
         // 取得方向鍵輸入
         // float h = Input.GetAxis("Horizontal");
@@ -93,7 +102,19 @@ public class Player : MonoBehaviour
         if (Moving == false)
         {
             // 產生出子彈
-            Instantiate(bulletPrefab, firePoint.transform.position, transform.rotation);
+            if (nor_shoot == true)
+                Instantiate(bulletPrefab, firePoint.transform.position, transform.rotation);
+            else if (double_shot == true)
+            {
+                Instantiate(bulletPrefab, firePoint.transform.position + new Vector3(0.1f, 0, 0), transform.rotation);
+                Instantiate(bulletPrefab, firePoint.transform.position + new Vector3(-0.1f, 0, 0), transform.rotation);
+            }
+            if (oblique_arrow == true)
+            {
+                Instantiate(bulletPrefab, firePoint2.transform.position, transform.rotation);
+                Instantiate(bulletPrefab, firePoint3.transform.position, transform.rotation);
+            }
+
         }
 
     }
@@ -106,7 +127,11 @@ public class Player : MonoBehaviour
         {
             // 射擊
             Fire();
-
+            if (continuous_shooting == true)
+            {
+                yield return new WaitForSeconds(0.1f);
+                Fire();
+            }
             // 暫停 0.5 秒
             yield return new WaitForSeconds(0.5f);
         }
