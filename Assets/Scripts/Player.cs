@@ -12,11 +12,12 @@ public class Player : MonoBehaviour
     private CharacterController controller;
 
     private GameObject focusEnemy;
+    private bool Moving;
 
     void Start()
     {
         controller = GetComponent<CharacterController>();
-
+        Moving = false;
         // 開始一直射擊的 Coroutine 函式
         StartCoroutine(KeepShooting());
     }
@@ -59,7 +60,7 @@ public class Player : MonoBehaviour
         {
             // 將方向向量轉為角度
             float faceAngle = Mathf.Atan2(h, v) * Mathf.Rad2Deg;
-
+            Moving = true;
             // 使用 Lerp 漸漸轉向
             Quaternion targetRotation = Quaternion.Euler(0, faceAngle, 0);
             transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, 0.3f);
@@ -69,6 +70,7 @@ public class Player : MonoBehaviour
             // 沒有移動輸入，並且有鎖定的敵人，漸漸面向敵人
             if (focusEnemy)
             {
+                Moving = false;
                 var targetRotation = Quaternion.LookRotation(focusEnemy.transform.position - transform.position);
                 transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 20 * Time.deltaTime);
             }
@@ -88,8 +90,12 @@ public class Player : MonoBehaviour
 
     void Fire()
     {
-        // 產生出子彈
-        Instantiate(bulletPrefab, firePoint.transform.position, transform.rotation);
+        if (Moving == false)
+        {
+            // 產生出子彈
+            Instantiate(bulletPrefab, firePoint.transform.position, transform.rotation);
+        }
+
     }
 
 
