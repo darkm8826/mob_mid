@@ -4,35 +4,62 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+    public GameObject bulletPrefab;
+    public Transform firePoint;
     private float hp = 100f;
+    private GameObject focusEnemy;
 
     void Start()
     {
-        
+
     }
 
     void Update()
     {
-        
+        // æ‰¾åˆ°æœ€è¿‘çš„ä¸€å€‹ç›®æ¨™ Enemy çš„ç‰©ä»¶
+        GameObject[] enemys = GameObject.FindGameObjectsWithTag("Player");
+
+        float miniDist = 9999;
+        foreach (GameObject enemy in enemys)
+        {
+            // è¨ˆç®—è·é›¢
+            float d = Vector3.Distance(transform.position, enemy.transform.position);
+
+            // è·Ÿä¸Šä¸€å€‹æœ€è¿‘çš„æ¯”è¼ƒï¼Œæœ‰æ¯”è¼ƒå°å°±è¨˜éŒ„ä¸‹ä¾†
+            if (d < miniDist)
+            {
+                miniDist = d;
+                focusEnemy = enemy;
+            }
+        }
+
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        // ¦pªG¸I¼²¨ìªº¬O¤l¼u
         if (other.tag == "Bullet")
         {
-            // ¥ı¨ú±o¤l¼uªº§ğÀ»¤O
             Bullet bullet = other.GetComponent<Bullet>();
-
-            // ¥ı¦©¦å
             hp -= bullet.atk;
-
-            // ¦pªG¨S¦å¤F¡A´N§R°£¦Û¤v
             if (hp <= 0)
             {
                 gameObject.SetActive(false);
                 Destroy(gameObject);
             }
+        }
+    }
+    void Fire()
+    {
+        Instantiate(bulletPrefab, firePoint.transform.position, transform.rotation);
+    }
+    IEnumerator KeepShooting()
+    {
+        while (true)
+        {
+            // å°„æ“Š
+            Fire();
+            // æš«åœ 0.5 ç§’
+            yield return new WaitForSeconds(0.5f);
         }
     }
 }
