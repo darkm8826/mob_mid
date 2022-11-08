@@ -6,7 +6,7 @@ public class Enemy : MonoBehaviour
 {
     public GameObject bulletPrefab;
     public Transform firePoint;
-    private float hp = 100f;
+    private float hp = 200f;
     private GameObject focusEnemy;
     private CharacterController controller;
 
@@ -81,6 +81,7 @@ public class Enemy : MonoBehaviour
         while (true)
         {
             // 射擊
+            yield return new WaitForSeconds(3f);
             Fire();
             // 暫停 0.5 秒
             yield return new WaitForSeconds(3f);
