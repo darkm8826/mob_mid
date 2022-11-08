@@ -10,6 +10,7 @@ public class Player : MonoBehaviour
     public Transform firePoint2;
     public Transform firePoint3;
     public GameObject bulletPrefab;
+    public static float EXP;
 
     private CharacterController controller;
     private GameObject focusEnemy;
