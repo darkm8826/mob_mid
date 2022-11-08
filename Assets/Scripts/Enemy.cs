@@ -66,6 +66,7 @@ public class Enemy : MonoBehaviour
             hp -= bullet.atk;
             if (hp <= 0)
             {
+                ScoreControl.Score += 100;
                 gameObject.SetActive(false);
                 Destroy(gameObject);
             }

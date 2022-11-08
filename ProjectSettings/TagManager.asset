@@ -7,6 +7,9 @@ TagManager:
   - Shootable
   - Enemy
   - Bullet
+  - Enemy_Bullet
+  - Wall
+  - Teleport
   layers:
   - Default
   - TransparentFX
