@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Bullet : MonoBehaviour
+public class Enemy_Bullet : MonoBehaviour
 {
     public float speed = 30f;
     public float atk = 50f;
@@ -14,6 +14,10 @@ public class Bullet : MonoBehaviour
         // 往前飛
         rb = GetComponent<Rigidbody>();
         rb.velocity = transform.forward * speed;
+    }
+
+    void Update()
+    {
         lifeTime += Time.deltaTime;
         if (lifeTime > 3)
         {
@@ -21,24 +25,15 @@ public class Bullet : MonoBehaviour
         }
     }
 
-    void Update()
-    {
-
-    }
-
     private void OnTriggerEnter(Collider other)
     {
         // 如果碰撞到的是子彈
-        if (other.tag == "Enemy")
+        if (other.tag == "Player")
         {
             // 刪除自己
             gameObject.SetActive(false);
             Destroy(gameObject);
         }
-        if (other.tag == "Wall")
-        {
-            gameObject.SetActive(false);
-            Destroy(gameObject);
-        }
     }
+
 }

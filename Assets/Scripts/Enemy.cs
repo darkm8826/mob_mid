@@ -8,10 +8,12 @@ public class Enemy : MonoBehaviour
     public Transform firePoint;
     private float hp = 100f;
     private GameObject focusEnemy;
+    private CharacterController controller;
 
     void Start()
     {
-
+        controller = GetComponent<CharacterController>();
+        StartCoroutine(KeepShooting());
     }
 
     void Update()
@@ -32,7 +34,28 @@ public class Enemy : MonoBehaviour
                 focusEnemy = enemy;
             }
         }
+        float h = 0;
+        float v = 0;
 
+        // 合成方向向量
+        Vector3 dir = new Vector3(h, 0, v);
+        if (dir.magnitude > 0.1f)
+        {
+            // 將方向向量轉為角度
+            float faceAngle = Mathf.Atan2(h, v) * Mathf.Rad2Deg;
+            // 使用 Lerp 漸漸轉向
+            Quaternion targetRotation = Quaternion.Euler(0, faceAngle, 0);
+            transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, 0.3f);
+        }
+        else
+        {
+            // 沒有移動輸入，並且有鎖定的敵人，漸漸面向敵人
+            if (focusEnemy)
+            {
+                var targetRotation = Quaternion.LookRotation(focusEnemy.transform.position - transform.position);
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 20 * Time.deltaTime);
+            }
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -59,7 +82,7 @@ public class Enemy : MonoBehaviour
             // 射擊
             Fire();
             // 暫停 0.5 秒
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(1f);
         }
     }
 }

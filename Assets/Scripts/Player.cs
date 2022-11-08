@@ -20,6 +20,8 @@ public class Player : MonoBehaviour
     public bool double_shot = false;
     public bool oblique_arrow = false;
 
+    private float hp = 1000f;
+
     void Start()
     {
         controller = GetComponent<CharacterController>();
@@ -118,6 +120,20 @@ public class Player : MonoBehaviour
 
         }
 
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "Enemy_Bullet")
+        {
+            Bullet bullet = other.GetComponent<Bullet>();
+            hp -= bullet.atk;
+            if (hp <= 0)
+            {
+                gameObject.SetActive(false);
+                Destroy(gameObject);
+            }
+        }
     }
 
 
