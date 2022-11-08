@@ -14,16 +14,16 @@ public class Bullet : MonoBehaviour
         // 往前飛
         rb = GetComponent<Rigidbody>();
         rb.velocity = transform.forward * speed;
-        lifeTime += Time.deltaTime;
-        if (lifeTime > 3)
-        {
-            Destroy(gameObject);
-        }
     }
 
     void Update()
     {
-
+        lifeTime += Time.deltaTime;
+        if (lifeTime > 3)
+        {
+            gameObject.SetActive(false);
+            Destroy(gameObject);
+        }
     }
 
     private void OnTriggerEnter(Collider other)

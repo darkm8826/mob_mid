@@ -83,7 +83,7 @@ public class Enemy : MonoBehaviour
             // 射擊
             Fire();
             // 暫停 0.5 秒
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(3f);
         }
     }
 }
