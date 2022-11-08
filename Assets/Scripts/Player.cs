@@ -7,19 +7,18 @@ public class Player : MonoBehaviour
     public float speed = 10;
     public Joystick joyStick;
     public Transform firePoint;
-    public Transform firePoint2;
-    public Transform firePoint3;
     public GameObject bulletPrefab;
     public static float EXP;
     public static bool continuous_shooting = false;
     public static bool double_shot = false;
+    public static float hp = 100f;
 
     private CharacterController controller;
     private GameObject focusEnemy;
     private bool Moving;
     private bool nor_shoot = true;
     private bool Moveable = true;
-    private float hp = 1000f;
+
 
     void Start()
     {
@@ -120,8 +119,9 @@ public class Player : MonoBehaviour
     {
         if (other.tag == "Enemy_Bullet")
         {
-            Bullet bullet = other.GetComponent<Bullet>();
-            hp -= bullet.atk;
+            Enemy_Bullet Enemy_Bullet = other.GetComponent<Enemy_Bullet>();
+            hp -= Enemy_Bullet.atk;
+
             if (hp <= 0)
             {
                 gameObject.SetActive(false);

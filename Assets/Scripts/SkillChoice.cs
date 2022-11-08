@@ -6,6 +6,8 @@ public class SkillChoice : MonoBehaviour
 {
     public GameObject Button1;
     public GameObject Button2;
+    public GameObject Button3;
+
 
     void Start()
     {
@@ -24,5 +26,6 @@ public class SkillChoice : MonoBehaviour
         Time.timeScale = 1;
         Button1.gameObject.SetActive(false);
         Button2.gameObject.SetActive(false);
+        Button3.gameObject.SetActive(false);
     }
 }
